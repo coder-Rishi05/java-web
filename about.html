@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Hub — Intro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --container-pad: 1rem;
+      --bg: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+      --surface: rgba(255, 255, 255, 0.9);
+      --surface-2: rgba(250, 250, 255, 0.9);
+      --glass-border: rgba(15, 23, 42, 0.06);
+      --text: #0f172a;
+      --muted: #64748b;
+      --blue: #f63b3b;
+      --green: #10B981;
+      --hover-accent: rgba(59, 130, 246, 0.12);
+      --card-shadow: 0 12px 30px rgba(16, 24, 40, 0.06);
+    }
+
+    html[data-theme="dark"] {
+      --bg: linear-gradient(135deg, #0b1220 0%, #060c1a 100%);
+      --surface: rgba(10, 14, 25, 0.82);
+      --surface-2: rgba(6, 10, 18, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.04);
+      --text: #e9f0fb;
+      --muted: #a4b5c8;
+      --blue: #b882ff;
+      --green: #30c08f;
+      --hover-accent: rgba(78, 134, 243, 0.1);
+      --card-shadow: 0 18px 50px rgba(2, 8, 22, 0.72);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.6s ease, color 0.4s ease;
+      position: relative;
+    }
+
+  
+    #dotOverlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    html[data-theme="dark"] #dotOverlay {
+      opacity: 0.55;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: var(--surface);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: var(--card-shadow);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    nav.hide {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      overflow: hidden;
+      border-radius: 50%;
+      background-image: url("https://i.pinimg.com/736x/62/ab/dd/62abddb7115af82faaf84915bd1b391b.jpg");
+      background-position: center;
+      background-size: cover;
+      border: 2px solid var(--glass-border);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.08);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      margin-left: 1.8rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background: var(--blue);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--blue);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .theme-toggle {
+      background: var(--hover-accent);
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-left: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(20deg) scale(1.1);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 1rem;
+      margin-bottom: 8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .hero h1 span {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      max-width: 550px;
+    }
+
+    .hero button {
+      margin-top: 2rem;
+      background: var(--blue);
+      border: none;
+      color: white;
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .hero button:hover {
+      transform: translateY(-4px);
+      background: var(--green);
+    }
+
+    
+    .floating-img {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .img-left {
+      left: 10%;
+      top: 40%;
+    }
+
+    .img-right {
+      right: 10%;
+      top: 30%;
+    }
+
+
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .floating-img {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="dotOverlay"></div>
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo"></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="program.html">Programs</a>
+        <a href="#">About</a>
+      </div>
+      <div class="theme-toggle" id="themeToggle">🌗</div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    
+    <div class="floating-img img-left" style="top: 35%; left: 8%; width: 80px; height: 80px;">
+      <img src="https://i.pinimg.com/736x/f7/78/2f/f7782f6c1133cd2e4a62c861e121db69.jpg"
+        style="object-fit: cover; width: 100%; height: 100%;" alt="">
+    </div>
+    <div class="floating-img img-left" style="top: 55%; left: 12%; width: 60px; height: 60px;">
+      <img src="https://i.pinimg.com/736x/b6/f5/b4/b6f5b4fd59507360c3753e7738068530.jpg"
+        style="object-fit: cover; width: 100%; height: 100%;" alt="">
+    </div>
+    <div class="floating-img img-left" style="top: 25%; left: 18%; width: 100px; height: 100px;">
+      <img src="https://i.pinimg.com/736x/73/ff/18/73ff18e01100e2fb408c1baa7640d519.jpg"
+        style="object-fit: cover; width: 100%; height: 100%;" alt="">
+    </div>
+
+    <div class="floating-img img-right" style="top: 25%; right: 8%; width: 90px; height: 90px;">
+      <img src="https://i.pinimg.com/1200x/31/10/08/311008e367fe9d6f71859f8656868625.jpg"
+        style="object-fit: cover; width: 100%; height: 100%;" alt="">
+    </div>
+    <div class="floating-img img-right" style="top: 50%; right: 12%; width: 70px; height: 70px;">
+      <img src="https://i.pinimg.com/736x/09/9c/92/099c92bf55b68a6a6b1e1f79aeaf1377.jpg"
+        style="object-fit: cover; width: 100%; height: 100%;" alt="">
+    </div>
+    <div class="floating-img img-right" style="top: 70%; right: 16%; width: 110px; height: 110px;">
+      <img src="https://i.pinimg.com/736x/12/11/32/1211329789c0fdcafbfa1e26b899ef50.jpg"
+        style="object-fit: cover; width: 100%; height: 100%;" alt="">
+    </div>
+
+    <h1>I'm <span>Rishi</span>,<br>a Frontend Developer & Backend<br>engineer create modern websites.</h1>
+    <p>Helping students learn coding visually — with real programs, dynamic examples, and clean code experiences.</p>
+    <button id="startBtn">Start Learning →</button>
+  </section>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis/bundled/lenis.min.js"></script>
+  <script>
+    const lenis = new Lenis({ duration: 1.2, smooth: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".hero h1", { opacity: 0, y: 50, duration: 1 });
+    gsap.from(".hero p", { opacity: 0, y: 30, duration: 1, delay: 0.5 });
+    gsap.from(".hero button", { opacity: 0, y: 20, duration: 1, delay: 0.8 });
+
+    gsap.utils.toArray(".floating-img").forEach((el, i) => {
+      const yMove = i % 2 === 0 ? 25 : -25;
+      gsap.to(el, { y: yMove, duration: 3 + Math.random() * 2, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    });
+
+    let lastScrollTop = 0;
+    const nav = document.querySelector("nav");
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      nav.classList.toggle("hide", scrollTop > lastScrollTop && scrollTop > 50);
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    const toggleBtn = document.getElementById("themeToggle");
+    toggleBtn.addEventListener("click", () => {
+      const html = document.documentElement;
+      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+    });
+
+    gsap.from(".elem", {
+      opacity: 0, y: 50, duration: 0.8, stagger: 0.2,
+      scrollTrigger: { trigger: ".last-page", start: "top 80%" }
+    });
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      gsap.to("body", { opacity: 0, duration: 0.8, onComplete: () => window.location.href = "program.html" });
+    });
+  </script>
+</body>
+
+</html>

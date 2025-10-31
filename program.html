@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Programs Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+
+      --container-pad: 1rem;
+
+
+      --bg: linear-gradient(135deg, #f9fafb 0%, #f0f4f8 100%);
+
+      --surface: rgba(255, 255, 255, 0.92);
+      --surface-2: rgba(248, 250, 252, 0.86);
+      --glass-border: rgba(15, 23, 42, 0.06);
+
+
+      --text: #0f172a;
+
+      --muted: #64748b;
+
+
+
+      --blue: #2563eb;
+
+      --green: #16a34a;
+
+      --hover-accent: rgba(37, 99, 235, 0.08);
+
+
+      --card-shadow: 0 12px 30px rgba(16, 24, 40, 0.06);
+
+
+      --dot-red: #ef4444;
+      --dot-amber: #facc15;
+      --dot-green: #22c55e;
+    }
+
+    html[data-theme="dark"] {
+      --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --surface: rgba(30, 41, 59, 0.85);
+      --surface-2: rgba(45, 55, 72, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.05);
+
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+
+      --blue: #ff8282;
+      --green: #4ade80;
+      --hover-accent: rgba(96, 165, 250, 0.08);
+
+      --card-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+
+      --dot-red: #f87171;
+      --dot-amber: #fbbf24;
+      --dot-green: #34d399;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.4s ease, color 0.4s ease, border 0.3s ease;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .navbar {
+      width: 100%;
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: var(--card-shadow);
+    }
+
+    .logo {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1.1em;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--blue);
+      color: var(--blue);
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1.2fr 1.8fr 2fr;
+      gap: 15px;
+      padding: 20px;
+      margin-top: 80px;
+      height: calc(100vh - 100px);
+      overflow: hidden;
+    }
+
+    .list-box {
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+      overflow-y: auto;
+      height: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: var(--blue) transparent;
+    }
+
+    .list-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .list-box::-webkit-scrollbar-thumb {
+      background-color: var(--blue);
+      border-radius: 4px;
+    }
+
+    #topics {
+      background: var(--surface-2);
+    }
+
+    #topics h3 {
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    #topics a {
+      border: 1px solid var(--blue);
+      width: 300px;
+    }
+
+    #topics a:hover {
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      color: #fff;
+      box-shadow: 0 0 10px var(--blue);
+    }
+
+    .list-box h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--blue);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 6px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .list-box a {
+      width: 470px;
+    }
+
+    a:hover {
+      background-color: var(--hover-accent);
+      transform: scale(1.03);
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background-color: var(--surface-2);
+    }
+
+    @media (max-width: 992px) {
+      .container {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: auto;
+      }
+
+      iframe {
+        height: 400px;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">JAVA HUB</div>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#" class="active">Programs</a>
+      <a href="about.html">About</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+  </nav>
+
+
+  <div class="container">
+
+    <div class="list-box" id="topics">
+      <h3>Topics</h3>
+      <ul>
+        <li><a href="#" onclick="showPrograms('applets')">1. Applets</a></li>
+        <li><a href="#" onclick="showPrograms('basic')">2. Basic Programming Constructs</a></li>
+        <li><a href="#" onclick="showPrograms('dataconver')">3. Data Conversion</a></li>
+        <li><a href="#" onclick="showPrograms('dem')">4. Delegation Event Model</a></li>
+        <li><a href="#" onclick="showPrograms('exception')">5. Exception Handling</a></li>
+        <li><a href="#" onclick="showPrograms('function')">6. Functions</a></li>
+        <li><a href="#" onclick="showPrograms('awt')">7. Graphical User Interface (AWT)</a></li>
+        <li><a href="#" onclick="showPrograms('inheritance')">8. Inheritance</a></li>
+        <li><a href="#" onclick="showPrograms('inputoutput')">9. Input/Output</a></li>
+        <li><a href="#" onclick="showPrograms('interface')">10. Interfaces</a></li>
+        <li><a href="#" onclick="showPrograms('jdbc')">11. Java Database Connectivity</a></li>
+        <li><a href="#" onclick="showPrograms('multi_arrays')">12. Multi-Dimension Arrays</a></li>
+        <li><a href="#" onclick="showPrograms('mt')">13. Multithreading</a></li>
+        <li><a href="#" onclick="showPrograms('oops')">14. Object Oriented Programming</a></li>
+        <li><a href="#" onclick="showPrograms('package')">15. Packages</a></li>
+        <li><a href="#" onclick="showPrograms('single_arrays')">16. Single Dimension Arrays</a></li>
+        <li><a href="#" onclick="showPrograms('string')">17. Strings</a></li>
+      </ul>
+    </div>
+
+
+    <div class="list-box" id="programList">
+      <h3>Program List</h3>
+      <p>Select a topic to view programs.</p>
+    </div>
+
+
+    <div class="list-box">
+      <h3>Program Code</h3>
+      <iframe id="codeFrame" src=""></iframe>
+    </div>
+  </div>
+
+
+  <script>
+    const programs = {
+      // oops
+      oops: [
+        { name: 'Write a Java program to create a class called "Person" with a name and age attribute. Create two instances of the "Person" class, set their attributes using the constructor, and print their name and age.', file: "code/oops/p1.java" },
+        { name: 'Write a Java program to create a class called "Dog" with a name and breed attribute. Create two instances of the "Dog" class, set their attributes using the constructor and modify the attributes using the setter methods and print the updated values.', file: "code/oops/p2.java" },
+        { name: 'Write a Java program to create a class called "Rectangle" with width and height attributes. Calculate the area and perimeter of the rectangle.', file: "code/oops/p3.java" },
+        { name: 'Write a Java program to create a class called "Circle" with a radius attribute. You can access and modify this attribute. Calculate the area and circumference of the circle.', file: "code/oops/p4.java" },
+        { name: 'Write a Java program to create a class called "Book" with attributes for title, author, and ISBN, and methods to add and remove books from a collection.', file: "code/oops/p5.java" },
+        { name: 'Write a Java program to create a class called "Employee" with a name, job title, and salary attributes, and methods to calculate and update salary.', file: "code/oops/p6.java" },
+        { name: 'Write a Java program to create a class called "Bank" with a collection of accounts and methods to add and remove accounts, and to deposit and withdraw money. Also define a class called "Account" to maintain account details of a particular customer.', file: "code/oops/p7.java" },
+        { name: 'Write a Java program to create class called "TrafficLight" with attributes for color and duration, and methods to change the color and check for red or green.', file: "code/oops/p8.java" },
+        { name: 'Write a Java program to create a class called "Employee" with a name, salary, and hire date attributes, and a method to calculate years of service.', file: "code/oops/p9.java" },
+        { name: 'Write a Java program to create a class called "Student" with a name, grade, and courses attributes, and methods to add and remove courses.', file: "code/oops/p10.java" },
+        { name: 'Write a Java program to create a class called "Library" with a collection of books and methods to add and remove books.', file: "code/oops/p11.java" },
+        { name: 'Write a Java program to create a class called "Airplane" with a flight number, destination, and departure time attributes, and methods to check flight status and delay.', file: "code/oops/p12.java" },
+        { name: 'Write a Java program to create a class called "Inventory" with a collection of products and methods to add and remove products, and to check for low inventory.', file: "code/oops/p13.java" },
+        { name: 'Write a Java program to create a class called "School" with attributes for students, teachers, and classes, and methods to add and remove students and teachers, and to create classes.', file: "code/oops/p14.java" },
+        { name: 'Write a Java program to create a class called "MusicLibrary" with a collection of songs and methods to add and remove songs, and to play a random song.', file: "code/oops/p15.java" },
+        { name: 'Write a Java program to create a class called "Shape" with abstract methods for calculating area and perimeter, and subclasses for "Rectangle", "Circle", and "Triangle".', file: "code/oops/p16.java" },
+        { name: 'Write a Java program to create a class called "Movie" with attributes for title, director, actors, and reviews, and methods for adding and retrieving reviews.', file: "code/oops/p17.java" },
+        { name: 'Write a Java program to create a class called "Restaurant" with attributes for menu items, prices, and ratings, and methods to add and remove items, and to calculate average rating.', file: "code/oops/p18.java" },
+        { name: 'Write a Java program to create a class with methods to search for flights and hotels, and to book and cancel reservations.', file: "code/oops/p19.java" },
+        { name: 'Create a class showing an example of default constructor.', file: "code/oops/p20.java" },
+        { name: 'Create a class showing an example of parameterized constructor.', file: "code/oops/p21.java" },
+        { name: 'Create a class showing an example of copy constructor.', file: "code/oops/p22.java" },
+        { name: 'Create a class entering the rollno, name and class of the student from user but rollno should be automatically generated as we enter the information of 10 students.', file: "code/oops/p23.java" },
+        { name: 'Create a class showing the area of circle and rectangle by method overloading.', file: "code/oops/p24.java" },
+        { name: 'Create a class, entering the command line arguments from the user and show all the arguments as output.', file: "code/oops/p25.java" },
+        { name: 'Write a Java program to create a class called Person with private instance variables name, age, and country. Provide public getter and setter methods to access and modify these variables.', file: "code/oops/p26.java" },
+        { name: 'Write a Java program to create a class called BankAccount with private instance variables accountNumber and balance. Provide public getter and setter methods to access and modify these variables.', file: "code/oops/p27.java" },
+        { name: 'Write a Java program to create a class called Rectangle with private instance variables length and width. Provide public getter and setter methods to access and modify these variables.', file: "code/oops/p28.java" },
+        { name: 'Write a Java program to create a class called Employee with private instance variables employee_id, employee_name, and employee_salary. Provide public getter and setter methods to access and modify the id and name variables, but provide a getter method for the salary variable that returns a formatted string.', file: "code/oops/p29.java" },
+        { name: 'Write a Java program to create a class called Circle with a private instance variable radius. Provide public getter and setter methods to access and modify the radius variable. However, provide two methods called calculateArea() and calculatePerimeter() that return the calculated area and perimeter based on the current radius value.', file: "code/oops/p30.java" },
+        { name: 'Write a Java program to create a class called Car with private instance variables company_name, model_name, year, and mileage. Provide public getter and setter methods to access and modify the company_name, model_name, and year variables. However, only provide a getter method for the mileage variable.', file: "code/oops/p31.java" },
+        { name: 'Write a Java program to create a class called Student with private instance variables student_id, student_name, and grades. Provide public getter and setter methods to access and modify the student_id and student_name variables. However, provide a method called addGrade() that allows adding a grade to the grades variable while performing additional validation.', file: "code/oops/p32.java" }
+      ],
+
+
+
+      // interface 
+
+      interface: [
+        { name: '1. Write a Java program to create an interface Shape with the getArea() method. Create three classes Rectangle, Circle, and Triangle that implement the Shape interface. Implement the getArea() method for each of the three classes.', file: "code/interface/p1.java" },
+        { name: '2. Write a Java program to create a Animal interface with a method called bark() that takes no arguments and returns void. Create a Dog class that implements Animal and overrides speak() to print "Dog is barking".', file: "code/interface/p2.java" },
+        { name: '3. Write a Java program to create an interface Flyable with a method called fly_obj(). Create three classes Spacecraft, Airplane, and Helicopter that implement the Flyable interface. Implement the fly_obj() method for each of the three classes.', file: "code/interface/p3.java" },
+        { name: '4. Write a Java programming to create a banking system with three classes - Bank, Account, SavingsAccount, and CurrentAccount. The bank should have a list of accounts and methods for adding them. Accounts should be an interface with methods to deposit, withdraw, calculate interest, and view balances. SavingsAccount and CurrentAccount should implement the Account interface and have their own unique methods.', file: "code/interface/p4.java" },
+        { name: '5. Write a Java program to create an interface Resizable with methods resizeWidth(int width) and resizeHeight(int height) that allow an object to be resized. Create a class Rectangle that implements the Resizable interface and implements the resize methods.', file: "code/interface/p5.java" },
+        { name: '6. Write a Java program to create an interface Drawable with a method draw() that takes no arguments and returns void. Create three classes Circle, Rectangle, and Triangle that implement the Drawable interface and override the draw() method to draw their respective shapes.', file: "code/interface/p6.java" },
+        { name: '7. Write a Java program to create an interface Sortable with a method sort() that sorts an array of integers in ascending order. Create two classes BubbleSort and SelectionSort that implement the Sortable interface and provide their own implementations of the sort() method.', file: "code/interface/p7.java" },
+        { name: '8. Write a Java program to create an interface Playable with a method play() that takes no arguments and returns void. Create three classes Football, Volleyball, and Basketball that implement the Playable interface and override the play() method to play the respective sports.', file: "code/interface/p8.java" },
+        { name: '9. Write a Java program to create an interface Searchable with a method search(String keyword) that searches for a given keyword in a text document. Create two classes Document and WebPage that implement the Searchable interface and provide their own implementations of the search() method.', file: "code/interface/p9.java" },
+        { name: '10. Write a Java program to create an interface Encryptable with methods encrypt (String data) and decrypt (String encryptedData) that define encryption and decryption operations. Create two classes AES and RSA that implement the Encryptable interface and provide their own encryption and decryption algorithms.', file: "code/interface/p10.java" },
+        { name: '11. Write a Java program to create an interface Sortable with a method sort (int[] array) that sorts an array of integers in descending order. Create two classes QuickSort and MergeSort that implement the Sortable interface and provide their own implementations of the sort() method.', file: "code/interface/p11.java" }
+      ],
+
+
+
+
+      // multithreding 
+      mt: [
+        { name: '1. Write a Java program to create a basic Java thread that prints "Hello, World!" when executed.', file: "code/mt/1.java" },
+        { name: '2. Write a Java program that creates two threads to find and print even and odd numbers from 1 to 20.', file: "code/mt/2.java" },
+        { name: '3. Write a Java program that sorts an array of integers using multiple threads.', file: "code/mt/3.java" },
+        { name: '4. Write a Java program that performs matrix multiplication using multiple threads.', file: "code/mt/4.java" },
+        { name: '5. Write a Java program that calculates the sum of all prime numbers up to a given limit using multiple threads.', file: "code/mt/5.java" },
+        { name: '6. Write a Java program to implement a concurrent web crawler that crawls multiple websites simultaneously using threads.', file: "code/mt/6.java" },
+        { name: '7. Write a Java program that creates a bank account with concurrent deposits and withdrawals using threads.', file: "code/mt/7.java" },
+        { name: '8. Create the program to create multiple threads by using Runnable interface.', file: "code/mt/8.java" },
+        { name: '9. Create the program to create multiple threads by using Thread class.', file: "code/mt/9.java" },
+        { name: '10. Create the program to create multiple threads, set its name and its priority.', file: "code/mt/10.java" },
+        { name: '11. Create the program to create multiple threads, show an example of synchronization keyword.', file: "code/mt/11.java" },
+        { name: '12. Create the program to create multiple threads, show an example of notify, notifyAll, wait, resume, sleep methods.', file: "code/mt/12.java" },
+        { name: '13. Create the program to create multiple threads, show an example of join and yield methods.', file: "code/mt/13.java" }
+      ],
+
+
+      // data conversion
+      dataconver: [
+        { name: '1. How to convert String to int', file: "code/dataconver/p1.java" },
+        { name: '2. How to convert int to String', file: "code/dataconver/p2.java" },
+        { name: '3. How to convert String to long', file: "code/dataconver/p3.java" },
+        { name: '4. How to convert long to String', file: "code/dataconver/p4.java" },
+        { name: '5. How to convert String to float', file: "code/dataconver/p5.java" },
+        { name: '6. How to convert float to String', file: "code/dataconver/p6.java" },
+        { name: '7. How to convert String to double', file: "code/dataconver/p7.java" },
+        { name: '8. How to convert double to String', file: "code/dataconver/p8.java" },
+        { name: '9. How to convert String to Date', file: "code/dataconver/p9.java" },
+        { name: '10. How to convert Date to String', file: "code/dataconver/p10.java" },
+        { name: '11. How to convert String to char', file: "code/dataconver/p11.java" },
+        { name: '12. How to convert char to String', file: "code/dataconver/p12.java" },
+        { name: '13. How to convert String to Object', file: "code/dataconver/p13.java" },
+        { name: '14. How to convert Object to String', file: "code/dataconver/p14.java" },
+        { name: '15. How to convert int to long', file: "code/dataconver/p15.java" },
+        { name: '16. How to convert long to int', file: "code/dataconver/p16.java" },
+        { name: '17. How to convert int to double', file: "code/dataconver/p17.java" },
+        { name: '18. How to convert double to int', file: "code/dataconver/p18.java" },
+        { name: '19. How to convert char to int', file: "code/dataconver/p19.java" },
+        { name: '20. How to convert int to char', file: "code/dataconver/p20.java" },
+        { name: '21. How to convert String to boolean', file: "code/dataconver/p21.java" },
+        { name: '22. How to convert boolean to String', file: "code/dataconver/p22.java" },
+        { name: '23. How to convert Date to Timestamp', file: "code/dataconver/p23.java" },
+        { name: '24. How to convert Timestamp to Date', file: "code/dataconver/p24.java" },
+        { name: '25. How to convert Binary to Decimal', file: "code/dataconver/p25.java" },
+        { name: '26. How to convert Decimal to Binary', file: "code/dataconver/p26.java" },
+        { name: '27. How to convert Hex to Decimal', file: "code/dataconver/p27.java" },
+        { name: '28. How to convert Decimal to Hex', file: "code/dataconver/p28.java" },
+        { name: '29. How to convert Octal to Decimal', file: "code/dataconver/p29.java" },
+        { name: '30. How to convert Decimal to Octal', file: "code/dataconver/p30.java" }
+      ],
+
+      // exception
+      exception: [
+        { name: "1.Write a Java program that throws an exception and catch it using a try-catch block.", file: "code/exception/p1.java" },
+        { name: "2.Write a Java program to create a method that takes an integer as a parameter and throws an exception if the number is odd.", file: "code/exception/p2.java" },
+        { name: "3.Write a Java program to create a method that reads a file and throws an exception if the file is not found.", file: "code/exception/p3.java" },
+        { name: "4.Write a Java program that reads a list of numbers from a file and throws an exception if any of the numbers are positive.", file: "code/exception/p4.java" },
+        { name: "5.Write a Java program that reads a file and throws an exception if the file is empty.", file: "code/exception/p5.java" },
+        { name: "6.Write a Java program that reads a list of integers from the user and throws an exception if any numbers are duplicates.", file: "code/exception/p6.java" },
+        { name: "7.Write a Java program to create a method that takes a string as input and throws an exception if the string does not contain vowels.", file: "code/exception/p7.java" },
+        { name: "8.Write a Java program to connect the Java API to Database, if connection not successful then throw an exception.", file: "code/exception/p8.java" },
+        { name: "9.Write a Java program to manage the driver with path, username and password, if not successful then throw an exception.", file: "code/exception/p9.java" },
+        { name: "10.Write a Java program to throw the SQL Query, insert, delete, update, if not successful then throw an exception.", file: "code/exception/p10.java" },
+        { name: "11.Write a Java program to show an example of throws Keyword.", file: "code/exception/p11.java" },
+        { name: "12.Write a Java program to show an example of multiple catch.", file: "code/exception/p12.java" }
+      ],
+
+      // fuction
+
+      function: [
+        { name: "1. Write a Java method to find the smallest number among three numbers.", file: "code/function/p1.java" },
+        { name: "2. Write a Java method to compute the average of three numbers.", file: "code/function/p2.java" },
+        { name: "3. Write a Java method to display the middle character of a string.", file: "code/function/p3.java" },
+        { name: "4. Write a Java method to count all the words in a string.", file: "code/function/p4.java" },
+        { name: "5. Write a Java method to compute the future investment value at a given interest rate for a specified number of years.", file: "code/function/p5.java" },
+        { name: "6. Write a Java method to print characters between two characters (i.e. A to P).", file: "code/function/p6.java" },
+        { name: "7. Write a Java method to check whether a string is a valid password.", file: "code/function/p7.java" },
+        { name: "8. Write a Java method to display the current date and time.", file: "code/function/p8.java" },
+        { name: "9. Write a Java method to find all twin prime numbers less than 100.", file: "code/function/p9.java" },
+        { name: "10. Write a Java method to count the number of digits in an integer.", file: "code/function/p10.java" },
+        { name: "11. Write a Java method that accepts three integers and checks whether they are consecutive or not. Returns true or false.", file: "code/function/p11.java" },
+        { name: "12. Write a Java method that accepts three integers and returns true if one is the middle point between the other two integers, otherwise false.", file: "code/function/p12.java" },
+        { name: "13. Write a Java method that checks whether all the characters in a given string are vowels (a, e, i, o, u) or not. Return true if each character in the string is a vowel, otherwise return false.", file: "code/function/p13.java" }
+      ],
+
+
+      // inhertance
+
+      inheritance: [
+        { name: "1. Write a Java program to create a class called Animal with a method called makeSound(). Create a subclass called Cat that overrides the makeSound() method to bark.", file: "code/inheritance/inheritance_1.java" },
+        { name: "2. Write a Java program to create a class called Vehicle with a method called drive(). Create a subclass called Car that overrides the drive() method to print \"Repairing a car\".", file: "code/inheritance/inheritance_2.java" },
+        { name: "3. Write a Java program to create a class called Shape with a method called getArea(). Create a subclass called Rectangle that overrides the getArea() method to calculate the area of a rectangle.", file: "code/inheritance/inheritance_3.java" },
+        { name: "4. Write a Java program to create a class called Employee with methods called work() and getSalary(). Create a subclass called HRManager that overrides the work() method and adds a new method called addEmployee().", file: "code/inheritance/inheritance_4.java" },
+        { name: "5. Write a Java program to create a class known as \"BankAccount\" with methods called deposit() and withdraw(). Create a subclass called SavingsAccount that overrides the withdraw() method to prevent withdrawals if the account balance falls below one hundred.", file: "code/inheritance/inheritance_5.java" },
+        { name: "6. Write a Java program to create a class called Animal with a method named move(). Create a subclass called Cheetah that overrides the move() method to run.", file: "code/inheritance/inheritance_6.java" },
+        { name: "7. Write a Java program to create a class known as Person with methods called getFirstName() and getLastName(). Create a subclass called Employee that adds a new method named getEmployeeId() and overrides the getLastName() method to include the employee's job title.", file: "code/inheritance/inheritance_7.java" },
+        { name: "8. Write a Java program to create a class called Shape with methods called getPerimeter() and getArea(). Create a subclass called Circle that overrides the getPerimeter() and getArea() methods to calculate the area and perimeter of a circle.", file: "code/inheritance/inheritance_8.java" },
+        { name: "9. Write a Java program to create a vehicle class hierarchy. The base class should be Vehicle, with subclasses Truck, Car and Motorcycle. Each subclass should have properties such as make, model, year, and fuel type. Implement methods for calculating fuel efficiency, distance traveled, and maximum speed.", file: "code/inheritance/inheritance_9.java" },
+        { name: "10. Write a Java program that creates a class hierarchy for employees of a company. The base class should be Employee, with subclasses Manager, Developer, and Programmer. Each subclass should have properties such as name, address, salary, and job title. Implement methods for calculating bonuses, generating performance reports, and managing projects.", file: "code/inheritance/inheritance_10.java" },
+        { name: "11. Create a program showing an example of super keyword.", file: "code/inheritance/inheritance_11.java" },
+        { name: "12. Create a program showing an example of super function.", file: "code/inheritance/inheritance_12.java" },
+        { name: "13. Create a program showing an example of method overriding.", file: "code/inheritance/inheritance_13.java" },
+        { name: "14. Create a program showing an example of dynamic method dispatch.", file: "code/inheritance/inheritance_14.java" },
+        { name: "15. Write a Java program to create an abstract class Animal with an abstract method called sound(). Create subclasses Lion and Tiger that extend the Animal class and implement the sound() method to make a specific sound for each animal.", file: "code/inheritance/inheritance_15.java" },
+        { name: "16. Write a Java program to create an abstract class Shape with abstract methods calculateArea() and calculatePerimeter(). Create subclasses Circle and Triangle that extend the Shape class and implement the respective methods to calculate the area and perimeter of each shape.", file: "code/inheritance/inheritance_16.java" },
+        { name: "17. Write a Java program to create an abstract class BankAccount with abstract methods deposit() and withdraw(). Create subclasses: SavingsAccount and CurrentAccount that extend the BankAccount class and implement the respective methods to handle deposits and withdrawals for each account type.", file: "code/inheritance/inheritance_17.java" },
+        { name: "18. Write a Java program to create an abstract class Animal with abstract methods eat() and sleep(). Create subclasses Lion, Tiger, and Deer that extend the Animal class and implement the eat() and sleep() methods differently based on their specific behavior.", file: "code/inheritance/inheritance_18.java" },
+        { name: "19. Write a Java program to create an abstract class Employee with abstract methods calculateSalary() and displayInfo(). Create subclasses Manager and Programmer that extend the Employee class and implement the respective methods to calculate salary and display information for each role.", file: "code/inheritance/inheritance_19.java" },
+        { name: "20. Write a Java program to create an abstract class Shape3D with abstract methods calculateVolume() and calculateSurfaceArea(). Create subclasses Sphere and Cube that extend the Shape3D class and implement the respective methods to calculate the volume and surface area of each shape.", file: "code/inheritance/inheritance_20.java" },
+        { name: "21. Write a Java program to create an abstract class Vehicle with abstract methods startEngine() and stopEngine(). Create subclasses Car and Motorcycle that extend the Vehicle class and implement the respective methods to start and stop the engines for each vehicle type.", file: "code/inheritance/inheritance_21.java" },
+        { name: "22. Write a Java program to create an abstract class Person with abstract methods eat() and exercise(). Create subclasses Athlete and LazyPerson that extend the Person class and implement the respective methods to describe how each person eats and exercises.", file: "code/inheritance/inheritance_22.java" },
+        { name: "23. Write a Java program to create an abstract class Instrument with abstract methods play() and tune(). Create subclasses for Glockenspiel and Violin that extend the Instrument class and implement the respective methods to play and tune each instrument.", file: "code/inheritance/inheritance_23.java" },
+        { name: "24. Write a Java program to create an abstract class Shape2D with abstract methods draw() and resize(). Create subclasses Rectangle and Circle that extend the Shape2D class and implement the respective methods to draw and resize each shape.", file: "code/inheritance/inheritance_24.java" },
+        { name: "25. Write a Java program to create an abstract class Bird with abstract methods fly() and makeSound(). Create subclasses Eagle and Hawk that extend the Bird class and implement the respective methods to describe how each bird flies and makes a sound.", file: "code/inheritance/inheritance_25.java" },
+        { name: "26. Write a Java program to create an abstract class GeometricShape with abstract methods area() and perimeter(). Create subclasses Triangle and Square that extend the GeometricShape class and implement the respective methods to calculate the area and perimeter of each shape.", file: "code/inheritance/inheritance_26.java" }
+      ],
+
+      //input-output
+
+      inputoutput: [
+        { name: "1. Enter the character from user using InputStreamReader", file: "code/input_output/io_1.java" },
+        { name: "2. Enter the string from user using BufferedStreamReader", file: "code/input_output/io_2.java" },
+        { name: "3. Enter the integer from user using Scanner class", file: "code/input_output/io_3.java" },
+        { name: "4. Enter the float from user using Scanner class", file: "code/input_output/io_4.java" },
+        { name: "5. Enter the double from user using Scanner class", file: "code/input_output/io_5.java" },
+        { name: "6. Enter the boolean from user using Scanner class", file: "code/input_output/io_6.java" },
+        { name: "7. Enter the short integer from user using Scanner class", file: "code/input_output/io_7.java" },
+        { name: "8. Enter the long integer from user using Scanner class", file: "code/input_output/io_8.java" },
+        { name: "9. Get all characters from the file and display on the screen", file: "code/input_output/io_9.java" },
+        { name: "10. Get all characters from the file, count number of lines, words, characters and display on the screen", file: "code/input_output/io_10.java" }
+      ],
+
+
+      // awt
+      awt: [
+        { name: "1. Create a simple AWT application that displays a button with FlowLayout manager.", file: "code/awt/p1.java" },
+        { name: "2. Create a simple AWT application that displays a button with Custom Layout.", file: "code/awt/p2.java" },
+        { name: "3. Create a simple AWT application that displays multiple buttons with BorderLayout manager (North, East, West, South, Center).", file: "code/awt/p3.java" },
+        { name: "4. Create a simple AWT application that displays a TextField with FlowLayout manager.", file: "code/awt/p4.java" },
+        { name: "5. Create a simple AWT application that displays a TextField with Custom Layout.", file: "code/awt/p5.java" },
+        { name: "6. Create a simple AWT application that displays a Checkbox with FlowLayout manager.", file: "code/awt/p6.java" },
+        { name: "7. Create a simple AWT application that displays a Checkbox with Custom Layout.", file: "code/awt/p7.java" },
+        { name: "8. Create a simple AWT application that displays a Label with FlowLayout manager.", file: "code/awt/p8.java" },
+        { name: "9. Create a simple AWT application that displays a Label with Custom Layout.", file: "code/awt/p9.java" },
+        { name: "10. Create a simple AWT application that displays a Choice with FlowLayout manager.", file: "code/awt/p10.java" },
+        { name: "11. Create a simple AWT application that displays a Choice with Custom Layout.", file: "code/awt/p11.java" },
+        { name: "12. Create a simple AWT application that displays a CheckboxGroup with FlowLayout manager.", file: "code/awt/p12.java" },
+        { name: "13. Create a simple AWT application that displays a CheckboxGroup with Custom Layout.", file: "code/awt/p13.java" },
+        { name: "14. Create a simple AWT application that displays a List with FlowLayout manager.", file: "code/awt/p14.java" },
+        { name: "15. Create a simple AWT application that displays a List with Custom Layout.", file: "code/awt/p15.java" },
+        { name: "16. Create a simple AWT application that displays a TextArea with FlowLayout manager.", file: "code/awt/p16.java" },
+        { name: "17. Create a simple AWT application that displays a TextArea with Custom Layout.", file: "code/awt/p17.java" },
+        { name: "18. Create a simple AWT application design a calculator that displays buttons, TextField with GridLayout manager.", file: "code/awt/p18.java" }
+      ],
+
+      //2d_arrays
+      multi_arrays: [
+        { name: "1. Write a Java program to create a 2D array and print its elements.", file: "code/2d_arrays/p1.java" },
+        { name: "2. Enter the Matrix of rows and columns entered by the user and print in matrix format", file: "code/2d_arrays/p2.java" },
+        { name: "3. Program to Add Two Matrices", file: "code/2d_arrays/p3.java" },
+        { name: "4. Program to Multiply Two Matrices", file: "code/2d_arrays/p4.java" },
+        { name: "5. Program to subtract the two matrices", file: "code/2d_arrays/p5.java" },
+        { name: "6. Program to determine whether two matrices are equal", file: "code/2d_arrays/p6.java" },
+        { name: "7. Program to display the lower triangular matrix", file: "code/2d_arrays/p7.java" },
+        { name: "8. Program to display the upper triangular matrix", file: "code/2d_arrays/p8.java" },
+        { name: "9. Program to find the frequency of odd & even numbers in the given matrix", file: "code/2d_arrays/p9.java" },
+        { name: "10. Program to find the sum of each row and each column of a matrix", file: "code/2d_arrays/p10.java" },
+        { name: "11. Program to find the transpose of a given matrix", file: "code/2d_arrays/p11.java" },
+        { name: "12. Program to determine whether a given matrix is an identity matrix", file: "code/2d_arrays/p12.java" },
+        { name: "13. Program to Transpose matrix", file: "code/2d_arrays/p13.java" }
+      ],
+
+      //1d_arrays
+      single_arrays: [
+        { name: "1. Program to copy all elements of one array into another array", file: "code/1d_arrays/1.java" },
+        { name: "2. Program to find the frequency of each element in the array", file: "code/1d_arrays/2.java" },
+        { name: "3. Program to left rotate the elements of an array", file: "code/1d_arrays/3.java" },
+        { name: "4. Program to print the duplicate elements of an array", file: "code/1d_arrays/4.java" },
+        { name: "5. Program to print the elements of an array", file: "code/1d_arrays/5.java" },
+        { name: "6. Program to print the elements of an array in reverse order", file: "code/1d_arrays/6.java" },
+        { name: "7. Program to print the elements of an array present on even position", file: "code/1d_arrays/7.java" },
+        { name: "8. Program to print the elements of an array present on odd position", file: "code/1d_arrays/8.java" },
+        { name: "9. Program to print the largest element in an array", file: "code/1d_arrays/9.java" },
+        { name: "10. Program to print the smallest element in an array", file: "code/1d_arrays/10.java" },
+        { name: "11. Program to print the number of elements present in an array", file: "code/1d_arrays/11.java" },
+        { name: "12. Program to print the sum of all the items of the array", file: "code/1d_arrays/12.java" },
+        { name: "13. Program to right rotate the elements of an array", file: "code/1d_arrays/13.java" },
+        { name: "14. Program to sort the elements of an array in ascending order", file: "code/1d_arrays/14.java" },
+        { name: "15. Program to sort the elements of an array in descending order", file: "code/1d_arrays/15.java" },
+        { name: "16. Program to Find 3rd Largest Number in an array", file: "code/1d_arrays/16.java" },
+        { name: "17. Program to Find 2nd Largest Number in an array", file: "code/1d_arrays/17.java" },
+        { name: "18. Program to Find Largest Number in an array", file: "code/1d_arrays/18.java" },
+        { name: "19. Program to Find 2nd Smallest Number in an array", file: "code/1d_arrays/19.java" },
+        { name: "20. Program to Find Smallest Number in an array", file: "code/1d_arrays/20.java" },
+        { name: "21. Program to Remove Duplicate Element in an array", file: "code/1d_arrays/21.java" },
+        { name: "22. Program to Print Odd and Even Numbers from an array", file: "code/1d_arrays/22.java" },
+        { name: "23. How to Sort an Array in Java", file: "code/1d_arrays/23.java" }
+      ],
+
+      // string
+      string: [
+        { name: "1. Program to Check if a String contains only digits?", file: "code/strings/1.java" },
+        { name: "2. Program to perform Deep Copy for String?", file: "code/strings/2.java" },
+        { name: "3. Program to prove String is immutable programmatically?", file: "code/strings/3.java" },
+        { name: "4. Program to remove all occurrences of a given character from input String?", file: "code/strings/4.java" },
+        { name: "5. Program to append the string using StringBuffer class", file: "code/strings/5.java" },
+        { name: "6. Program to insert the string using StringBuffer class", file: "code/strings/6.java" },
+        { name: "7. Program to Add Characters to a String", file: "code/strings/7.java" },
+        { name: "8. Program to Add Characters to a String", file: "code/strings/8.java" },
+        { name: "9. Program to Check Anagram", file: "code/strings/9.java" },
+        { name: "10. Program to check whether a string is a Palindrome", file: "code/strings/10.java" },
+        { name: "11. Program to Convert Enum to String", file: "code/strings/11.java" },
+        { name: "12. Program to Convert String to String Array", file: "code/strings/12.java" },
+        { name: "13. Program to count number of words in a String?", file: "code/strings/13.java" },
+        { name: "14. Program to count the total number of characters in a string", file: "code/strings/14.java" },
+        { name: "15. Program to count the total number of punctuation characters exists in a String", file: "code/strings/15.java" },
+        { name: "16. Program to count the total number of vowels and consonants in a string", file: "code/strings/16.java" },
+        { name: "17. Program to determine whether a given string is palindrome", file: "code/strings/17.java" },
+        { name: "18. Program to determine whether one string is a rotation of another", file: "code/strings/18.java" },
+        { name: "19. Program to divide a string in 'N' equal parts.", file: "code/strings/19.java" },
+        { name: "20. Program to find all subsets of a string", file: "code/strings/20.java" },
+        { name: "21. Program to find all the permutations of a string", file: "code/strings/21.java" },
+        { name: "22. Program to find maximum and minimum occurring character in a string", file: "code/strings/22.java" },
+        { name: "23. Program to find Reverse of the string", file: "code/strings/23.java" },
+        { name: "24. Program to find the duplicate characters in a string", file: "code/strings/24.java" },
+        { name: "25. Program to find the duplicate words in a string", file: "code/strings/25.java" },
+        { name: "26. Program to find the frequency of characters", file: "code/strings/26.java" },
+        { name: "27. Program to find the largest and smallest word in a string", file: "code/strings/27.java" },
+        { name: "28. Program to find the longest repeating sequence in a string", file: "code/strings/28.java" },
+        { name: "29. Program to find the most repeated word in a text file", file: "code/strings/29.java" },
+        { name: "30. Program to find the number of the words in the given text file", file: "code/strings/30.java" },
+        { name: "31. Program to Get a Character From the Given String", file: "code/strings/31.java" },
+        { name: "32. Program to Insert a string into another string", file: "code/strings/32.java" },
+        { name: "33. Program to Iterate Over Characters in String", file: "code/strings/33.java" },
+        { name: "34. Program to Print a New Line in String", file: "code/strings/34.java" },
+        { name: "35. Program to Print even length words", file: "code/strings/35.java" },
+        { name: "36. Program to print smallest and biggest possible palindrome word in a given string", file: "code/strings/36.java" },
+        { name: "37. Program to remove all the white spaces from a string", file: "code/strings/37.java" },
+        { name: "38. Program to replace lower-case characters with upper-case and vice-versa", file: "code/strings/38.java" },
+        { name: "39. Program to replace the spaces of a string with a specific character", file: "code/strings/39.java" },
+        { name: "40. Program to separate the Individual Characters from a String", file: "code/strings/40.java" },
+        { name: "41. Program to Splitting into a number of sub-strings", file: "code/strings/41.java" },
+        { name: "42. Program to swap two string variables without using third or temp variable.", file: "code/strings/42.java" },
+        { name: "43. Program to Swapping Pair of Characters", file: "code/strings/43.java" },
+        { name: "44. Read two String user input and check if first contains second?", file: "code/strings/44.java" },
+        { name: "45. Reserve String without reverse() function", file: "code/strings/45.java" },
+        { name: "46. Reverse String Word by Word", file: "code/strings/46.java" },
+        { name: "47. Write a program to check if two Strings are created with same characters?", file: "code/strings/47.java" },
+        { name: "48. Write a program to find out first non repeated character from input String?", file: "code/strings/48.java" },
+        { name: "49. Create an object StringBuffer class to reverse the string.", file: "code/strings/49.java" },
+        { name: "50. Create an object StringBuffer class to show functionality of insert, append, delete and replace functions.", file: "code/strings/50.java" }
+      ],
+      //jdbc
+
+      jdbc: [
+        { name: "1. Create the connection with MySQL Database and manage the driver.", file: "code/java_database_connectivity/jdbc_1.java" },
+        { name: "2. Create the table in the database from Java API.", file: "code/java_database_connectivity/jdbc_2.java" },
+        { name: "3. Insert the row in the table in the database from Java API.", file: "code/java_database_connectivity/jdbc_3.java" },
+        { name: "4. Update the row in the table in the database from Java API.", file: "code/java_database_connectivity/jdbc_4.java" },
+        { name: "5. Delete the row in the table in the database from Java API.", file: "code/java_database_connectivity/jdbc_5.java" },
+        { name: "6. Select multiple rows from the database table in Java API and show the result on the screen.", file: "code/java_database_connectivity/jdbc_6.java" },
+        { name: "7. Create a Scrollable Readonly Resultset and ask the row number from the user and display that row on the screen.", file: "code/java_database_connectivity/jdbc_7.java" },
+        { name: "8. Create a Scrollable Updateable Resultset and insert a new row, update an existing row and delete the row from Resultset and also the changes should be made to the database also. The values should be inserted, updated and deleted by the user only.", file: "code/java_database_connectivity/jdbc_8.java" },
+        { name: "9. Create a Java Program to show, insert, update, delete of the table in Java API through PreparedStatement.", file: "code/java_database_connectivity/jdbc_9.java" }
+      ],
+
+      //applets
+
+      applets: [
+        { name: "1. Create an applet showing the string 'Hello World' which is embedded in the HTML page.", file: "code/applets/q1.java" },
+        { name: "2. Create an applet showing the string 'Hello World' which is executed by an appletviewer.", file: "code/applets/q2.java" },
+        { name: "3. Create an applet in Java to draw a circle.", file: "code/applets/q3.java" },
+        { name: "4. Create an applet in Java to draw a polygon.", file: "code/applets/q4.java" },
+        { name: "5. Create an applet in Java to draw a rectangle.", file: "code/applets/q5.java" },
+        { name: "6. Create an applet in Java to draw a square.", file: "code/applets/q6.java" },
+        { name: "7. Create an applet in Java to draw 4 concentric circles.", file: "code/applets/q7.java" },
+        { name: "8. Create an applet in Java to draw a line.", file: "code/applets/q8.java" },
+        { name: "9. Create an applet in Java to draw an oval.", file: "code/applets/q9.java" },
+        { name: "10. Create an applet in Java to draw an arc.", file: "code/applets/q10.java" },
+        { name: "11. Create an applet in Java to change the background color.", file: "code/applets/q11.java" },
+        { name: "12. Create an applet in Java to draw a rounded rectangle.", file: "code/applets/q12.java" },
+        { name: "13. Create an applet in Java to set font.", file: "code/applets/q13.java" },
+        { name: "14. Create an applet to display a digital clock.", file: "code/applets/q14.java" },
+        { name: "15. Java Program to Draw a Smiling Face using Graphics Class Methods.", file: "code/applets/q15.java" }
+      ],
+
+      // basic
+      basic: [
+        { name: "1. Write a Java program to print ‘Hello World!’ on screen", file: "code/basic/p1.java" },
+        { name: "2. Write a Java program to print the sum of two numbers", file: "code/basic/p2.java" },
+        { name: "3. Write a Java program that takes two numbers and display the product of two numbers", file: "code/basic/p3.java" },
+        { name: "4. Write a Java program to print the sum, multiply, subtract, divide and remainder of two numbers", file: "code/basic/p4.java" },
+        { name: "5. Write a Java program that takes five numbers as input to calculate and print the average of the numbers", file: "code/basic/p5.java" },
+        { name: "6. Write a Java program to swap two variables", file: "code/basic/p6.java" },
+        { name: "7. Write a Java program to convert a decimal number to binary numbers", file: "code/basic/p7.java" },
+        { name: "8. Write a Java program to convert a binary number to decimal number", file: "code/basic/p8.java" },
+        { name: "9. Write a Java program to check whether Java is installed on your computer or not", file: "code/basic/p9.java" },
+        { name: "10. Write a Java program and compute the sum of the digits of an integer", file: "code/basic/p10.java" },
+        { name: "11. Write a Java program to compare two numbers", file: "code/basic/p11.java" },
+        { name: "12. Write a Java program to count the letters, spaces, numbers and other characters of an input string", file: "code/basic/p12.java" },
+        { name: "13. Write a Java program to print the ascii value of a given character", file: "code/basic/p13.java" },
+        { name: "14. Write a Java program that accepts an integer (n) and computes the value of n+nn+nnn", file: "code/basic/p14.java" },
+        { name: "15. Write a Java program to display the system time", file: "code/basic/p15.java" },
+        { name: "16. Write a Java program to print the odd numbers from 1 to 20", file: "code/basic/p16.java" },
+        { name: "17. Write a Java program to print the even numbers from 1 to 20", file: "code/basic/p17.java" },
+        { name: "18. Write a Java program to convert a string to an integer", file: "code/basic/p18.java" },
+        { name: "19. Write a Java program to convert seconds to hour, minute and seconds", file: "code/basic/p19.java" },
+        { name: "20. Write a Java program to compute the sum of the first 100 prime numbers", file: "code/basic/p20.java" },
+        { name: "21. Write a Java program to swap the first and last elements of an array and create a new array", file: "code/basic/p21.java" },
+        { name: "22. Write a Java program to count the number of even and odd elements in a given array", file: "code/basic/p22.java" },
+        { name: "23. Write a Java program to compute the square root of an given integer", file: "code/basic/p23.java" },
+        { name: "24. Write a Java program to check if a positive number is a palindrome or not", file: "code/basic/p24.java" },
+        { name: "25. Write a Java program to add two numbers without using any arithmetic operators", file: "code/basic/p25.java" },
+        { name: "26. Write a Java program to add all the digits of a given positive integer", file: "code/basic/p26.java" },
+        { name: "27. Java program to find area of circle", file: "code/basic/p27.java" },
+        { name: "28. Java Program to find area of rectangle", file: "code/basic/p28.java" },
+        { name: "29. Java Program to find area of triangle", file: "code/basic/p29.java" },
+        { name: "30. Java Program to find area of equilateral triangle", file: "code/basic/p30.java" },
+        { name: "31. Java Program to find area of rhombus", file: "code/basic/p31.java" },
+        { name: "32. Java Program to find area of parallelogram", file: "code/basic/p32.java" },
+        { name: "33. Java Program to find area of Prism", file: "code/basic/p33.java" },
+        { name: "34. Java Program to find volume of sphere", file: "code/basic/p34.java" },
+        { name: "35. Java Program to find volume of cylinder", file: "code/basic/p35.java" },
+        { name: "36. Java Program to find volume of cuboid", file: "code/basic/p36.java" },
+        { name: "37. Java Program to find volume of cone", file: "code/basic/p37.java" },
+        { name: "38. Java program to find surface area of cuboid", file: "code/basic/p38.java" },
+        { name: "39. Java program to find surface area of cylinder", file: "code/basic/p39.java" },
+        { name: "40. Java program to find surface area of cube", file: "code/basic/p40.java" },
+        { name: "41. Java program to calculate average marks", file: "code/basic/p41.java" },
+        { name: "42. Java program to check vowel or consonant", file: "code/basic/p42.java" },
+        { name: "43. Java program to sum of N numbers", file: "code/basic/p43.java" },
+        { name: "44. Java program to find factorial of any number", file: "code/basic/p44.java" },
+        { name: "45. Java Program to calculate electricity bill", file: "code/basic/p45.java" },
+        { name: "46. Java Program To Calculate CGPA Percentage", file: "code/basic/p46.java" },
+        { name: "47. Java Program to calculate compound interest", file: "code/basic/p47.java" },
+        { name: "48. Java Program To Calculate Batting Average", file: "code/basic/p48.java" },
+        { name: "49. Java Pogram to Calculate Commission Percentage", file: "code/basic/p49.java" },
+        { name: "50. Java Pogram To Find Distance Between Two Points", file: "code/basic/p50.java" },
+        { name: "51. Java Program To Calculate Power Of Number", file: "code/basic/p51.java" },
+        { name: "52. Write a Java program to take three numbers from the user and print the greatest number", file: "code/basic/p52.java" },
+        { name: "53. Write a Java program to find the number of days in a month", file: "code/basic/p53.java" },
+        { name: "54. Write a Java program to test a number is positive or negative", file: "code/basic/p54.java" },
+        { name: "55. Write a Java Program to accept number of week’s day (1-7) and print name of the day", file: "code/basic/p55.java" },
+        { name: "56. Write a Java program that takes a year from user and print whether that year is a leap year or not", file: "code/basic/p56.java" },
+        { name: "57. Write a Java program to input 5 numbers from keyboard and find their sum and average", file: "code/basic/p57.java" },
+        { name: "58. Write a program in Java to display the first 5 natural numbers", file: "code/basic/p58.java" },
+        { name: "59. Write a java program to check vowel or consonant", file: "code/basic/p59.java" },
+        { name: "60. Write a Java program to display the cube of the number upto given an integer", file: "code/basic/p60.java" },
+        { name: "61. Write a Java program to display the n terms of odd natural number and their sum", file: "code/basic/p61.java" },
+        { name: "62. Write a Java program to display the multiplication table of a given integer", file: "code/basic/p62.java" },
+        { name: "63. Write a Java program that reads an integer and check whether it is negative, zero, or positive", file: "code/basic/p63.java" },
+        { name: "64. Write a Java program that reads an positive integer and count the number of digits", file: "code/basic/p64.java" },
+        { name: "65. Write a Java program that accepts three numbers and check All numbers are equal or not", file: "code/basic/p65.java" },
+        { name: "66. Write a java program that accepts three numbers from the user and check if numbers are in “increasing” or “decreasing” order.", file: "code/basic/p66.java" },
+        { name: "67. Write a Java program that determines a student’s grade", file: "code/basic/p67.java" },
+        { name: "68. Write a Java program to create a simple calculator", file: "code/basic/p68.java" },
+        { name: "69. Write a Java program to concatenate two string", file: "code/basic/p69.java" },
+        { name: "70. Write a Java program to convert all characters in a string to lowercase", file: "code/basic/p70.java" },
+        { name: "71. Write a Java program to convert all characters in a string to uppercase", file: "code/basic/p71.java" },
+        { name: "72. Write a Java program to trim a string(remove whitespaces)", file: "code/basic/p72.java" },
+        { name: "73. Write a Java program to get a substring of a given string between two specified positions", file: "code/basic/p73.java" },
+        { name: "74. Write a Java program to replace all the ‘d’ characters with ‘f’ characters", file: "code/basic/p74.java" },
+        { name: "75. Write a java program to get the length of a given string", file: "code/basic/p75.java" },
+        { name: "76. Write a java program to print current date and time in the specified format", file: "code/basic/p76.java" },
+        { name: "77. Write a Java program to get the character at the given index within the String", file: "code/basic/p77.java" },
+        { name: "78. Write a java program to remove a particular character from a string", file: "code/basic/p78.java" },
+        { name: "79. Write a java program to reverse a String", file: "code/basic/p79.java" },
+        { name: "80. Write a java program to remove html tags from a string", file: "code/basic/p80.java" },
+        { name: "81. Write a java program to count total number of lines from a string", file: "code/basic/p81.java" },
+        { name: "82. Write a Java program to sum values of an array", file: "code/basic/p82.java" },
+        { name: "83. Write a Java program to find the index of an array element", file: "code/basic/p83.java" },
+        { name: "84. Write a Java program to calculate the average value of array elements", file: "code/basic/p84.java" },
+        { name: "85. Write a Java program to test if an array contains a specific value", file: "code/basic/p85.java" },
+        { name: "86. Write a Java program to find the maximum and minimum value of an array", file: "code/basic/p86.java" },
+        { name: "87. Write a Java program to insert an element (specific position) into an array", file: "code/basic/p87.java" },
+        { name: "88. Write a Java program to reverse an array of integer values", file: "code/basic/p88.java" },
+        { name: "89. Write a Java program to find the common elements between two arrays", file: "code/basic/p89.java" },
+        { name: "90. Write a Java program to find the duplicate values of an array of integer values", file: "code/basic/p90.java" },
+        { name: "91. Write a Java program to convert an array to ArrayList", file: "code/basic/p91.java" },
+        { name: "92. Write a Java program to add two matrices of the same size", file: "code/basic/p92.java" },
+        { name: "93. Write a Java program to find second largest number from the array", file: "code/basic/p93.java" },
+        { name: "94. Write a Java program to find second lowest number from the array", file: "code/basic/p94.java" },
+        { name: "95. Write a Java program to find the number of even and odd integers in a given array of integers", file: "code/basic/p95.java" },
+        { name: "96. Write a Java program to get the difference between the largest and smallest values in an array of integers", file: "code/basic/p96.java" },
+        { name: "97. Write a Java program to segregate all 0s on left side and all 1s on right side of a given array of 0s and 1s", file: "code/basic/p97.java" },
+        { name: "98. Write a Java program to cyclically rotate a given array clockwise by one", file: "code/basic/p98.java" },
+        { name: "99. java program to print all unique element in an array", file: "code/basic/p99.java" },
+        { name: "100. Write a Java Program to Sort the Array in an Ascending Order", file: "code/basic/p100.java" },
+        { name: "101. Write a Java Program to Sort the Array in an Descending Order", file: "code/basic/p101.java" },
+        { name: "102. Write a Java Program to Sort Names in an Alphabetical Order", file: "code/basic/p102.java" },
+        { name: "103. Write a Java Program to Display Transpose Matrix", file: "code/basic/p103.java" },
+        { name: "104. Write a Java Program to Search Key Elements in an Array", file: "code/basic/p104.java" },
+        { name: "105. Write a Java Program to Accept the Marks of a Student and find Total Marks and Percentage", file: "code/basic/p105.java" },
+        { name: "106. Write a java program to print numbers from 1 to 10 using loop", file: "code/basic/p106.java" },
+        { name: "107. Write a java program to calculate the sum of first 10 natural number using loop", file: "code/basic/p107.java" },
+        { name: "108. Write a Java program to print multiplication table of given number", file: "code/basic/p108.java" },
+        { name: "109. Write a Java program to find the factorial value of any number entered through the keyboard", file: "code/basic/p109.java" },
+        { name: "110. Write a Java program that prompts the user to input an integer and then outputs the number with the digits reversed order", file: "code/basic/p110.java" },
+        { name: "111. Write a Java program that reads a set of integers, and then prints the sum of the even and odd integers using loop", file: "code/basic/p111.java" },
+        { name: "112. Write a Java program to check whether the number is a prime number or not", file: "code/basic/p112.java" },
+        { name: "113. Write a Java program to calculate HCF of Two given numbers using loop", file: "code/basic/p113.java" },
+        { name: "114. Write a Java program to enter the numbers till the user wants and at the end it should display the count of positive, negative and zeros", file: "code/basic/p114.java" },
+        { name: "115. Write a Java program to enter the numbers till the user wants and at the end the program should display the largest and smallest numbers entered", file: "code/basic/p115.java" },
+        { name: "116. Write a Java program to print out all Armstrong numbers between 1 to 600 using loop", file: "code/basic/p116.java" },
+        { name: "117. Write a java program to count total number of notes in entered amount using loop", file: "code/basic/p117.java" },
+        { name: "118. Write a Java program to print Fibonacci series of n terms where n is input by user using loop", file: "code/basic/p118.java" },
+        { name: "119. Write a java program to calculate the sum of following series where n is input by user", file: "code/basic/p119.java" },
+        { name: "120. Write a Java method to compute the average of three numbers", file: "code/basic/p120.java" },
+        { name: "121. Write a Java method to find the smallest number among three numbers", file: "code/basic/p121.java" },
+        { name: "122. Write a Java method to count all words in a string", file: "code/basic/p122.java" },
+        { name: "123. Write a Java method to count all vowels in a string", file: "code/basic/p123.java" },
+        { name: "124. Write a Java method to compute the sum of the digits in an integer", file: "code/basic/p124.java" },
+        { name: "125. Write a Java method to check whether an year entered by the user is a leap year or not", file: "code/basic/p125.java" },
+        { name: "126. Write a Java method to calculate the area of a triangle", file: "code/basic/p126.java" },
+        { name: "127. Write a Java method to find the area of a pentagon", file: "code/basic/p127.java" },
+        { name: "128. Write a Java method to find number is even number or not", file: "code/basic/p128.java" },
+        { name: "129. Write a Java method to check numbers is palindrome number or not", file: "code/basic/p129.java" },
+      ],
+
+
+      dem: [
+        { name: "1. Java Program to Display Some Text in the Frame using Labels", file: "code/dem/p1.java" },
+        { name: "2. Java Program to Create Text Area and Password Field", file: "code/dem/p2.java" },
+        { name: "3. Java Program to Create a Button and Display Image in the Frame when Clicked", file: "code/dem/p3.java" },
+        { name: "4. Java Program to Create 2 Radio Buttons and Display Selected Button Label", file: "code/dem/p4.java" },
+        { name: "5. Java Program to Handle KeyBoardEvent", file: "code/dem/p5.java" },
+        { name: "6. Java Program to Handle MouseEvent", file: "code/dem/p6.java" },
+        { name: "7. Java Program to Get and Set State and Get Label of a Check Box", file: "code/dem/p7.java" },
+        { name: "8. Java Program to Create Check Boxes and Radio Buttons", file: "code/dem/p8.java" },
+        { name: "9. Java Program to Create and Switch between Frames using Buttons", file: "code/dem/p9.java" },
+        { name: "10. Java Program to Create and Set Border to Push Buttons", file: "code/dem/p10.java" },
+        { name: "11. Java Program to Create a List Box to Select Multiple Items and Display it in the Frame", file: "code/dem/p11.java" },
+        { name: "12. Java Program to Display a Message in a New Frame", file: "code/dem/p12.java" },
+        { name: "13. Java Program to Close the Frame using WindowAdapter Class", file: "code/dem/p13.java" },
+        { name: "14. Java Program to Check Which Fonts are Available in a Local System", file: "code/dem/p14.java" },
+        { name: "15. Java Program to Display Text in Different Fonts", file: "code/dem/p15.java" },
+        { name: "16. Java Program to Change Frame Background Color as Cyan", file: "code/dem/p16.java" },
+        { name: "17. Java Program to Change the Applet Background Colour when Button Clicked", file: "code/dem/p17.java" },
+        { name: "18. Java Program to Display Several Dots on the Screen Continuously", file: "code/dem/p18.java" },
+        { name: "19. Java Program to Validate the TextField for only entering numbers using KeyListener", file: "code/dem/p19.java" },
+        { name: "20. Java Program to Validate the TextField for only entering email id using KeyAdapter", file: "code/dem/p20.java" }
+      ],
+
+
+      package: [
+        { name: "1. Create a Java program to access the java.util.Date class through import keyword and print the current date of the system", file: "code/package/p1.java" },
+        { name: "2. Create a Java program to access the java.util.Date class through qualified way and print the current date of the system", file: "code/package/p2.java" },
+        { name: "3. Create a Java program to access the java.util.Date class through import keyword and print the current date of the system but inherit the Date class", file: "code/package/p3.java" },
+        { name: "4. Create a Java program to access the java.util.Date class through qualified way and print the current date of the system but inherit the Date class", file: "code/package/p4.java" },
+        { name: "5. Create a Java program to create a package with multiple default classes", file: "code/package/p5.java" },
+        { name: "6. Create a Java program to create a package with 4 public classes, create the object in another file and call the function created in those classes", file: "code/package/p6.java" },
+        { name: "7. Write a Java program to perform employee payroll processing using packages (Emp.java and Emppay.java)", file: "code/package/p7.java" },
+        { name: "8. Create a Java program to create a package with public class and protected members to be accessed in another class", file: "code/package/p8.java" },
+        { name: "9. Create a Java program to create a nested package i.e. c4.sample with public class and protected members to be accessed in another class", file: "code/package/p9.java" },
+        { name: "10. Create a Java program to create a package with public class and public members to be accessed in another class", file: "code/package/p10.java" }
+      ]
+
+
+
+
+
+
+    };
+
+
+
+    function showPrograms(topic) {
+      const listDiv = document.getElementById("programList");
+      const topicPrograms = programs[topic];
+      if (!topicPrograms) {
+        listDiv.innerHTML = "<p>No programs available for this topic.</p>";
+        return;
+      }
+      let html = `<h3>${topic.toUpperCase()} Programs</h3><ul>`;
+      topicPrograms.forEach((p) => {
+        html += `<li><a href="#" onclick="loadProgram('${p.file}')">${p.name}</a></li>`;
+      });
+      html += "</ul>";
+      listDiv.innerHTML = html;
+    }
+
+    function loadProgram(filePath) {
+      document.getElementById("codeFrame").src = filePath;
+    }
+
+    const savedTheme = localStorage.getItem("je_theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+
+
+    const themeBtn = document.querySelector(".theme-toggle");
+    if (themeBtn) {
+      themeBtn.textContent = savedTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+
+      themeBtn.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("je_theme", next);
+        themeBtn.textContent = next === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+      });
+    }
+  </script>
+</body>
+
+</html>

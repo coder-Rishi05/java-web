@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Java Education — Light & Dark (Fixed)</title>
+
+
+    <script>
+        (function () {
+            try {
+                const saved = localStorage.getItem('je_theme');
+                if (saved === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    // ensure explicit light attribute is not set (keeps default light)
+                    document.documentElement.removeAttribute('data-theme');
+                }
+            } catch (e) { /* ignore if localStorage blocked */ }
+        })();
+    </script>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+
+            --container-pad: 1rem;
+
+            --bg: linear-gradient(135deg, #f9fafb 0%, #f0f4f8 100%);
+
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-2: rgba(248, 250, 252, 0.86);
+            --glass-border: rgba(15, 23, 42, 0.06);
+
+            --text: #0f172a;
+
+            --muted: #64748b;
+
+            --blue: #2563eb;
+            --green: #16a34a;
+            --hover-accent: rgba(37, 99, 235, 0.08);
+
+            --card-shadow: 0 12px 30px rgba(16, 24, 40, 0.06);
+
+            --dot-red: #ef4444;
+            --dot-amber: #facc15;
+            --dot-green: #22c55e;
+        }
+
+        html[data-theme="dark"] {
+            --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --surface: rgba(30, 41, 59, 0.85);
+            --surface-2: rgba(45, 55, 72, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.05);
+
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+
+            --blue: #fa6860;
+            --green: #4ade80;
+            --hover-accent: rgba(96, 165, 250, 0.08);
+
+            --card-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+
+            --dot-red: #f87171;
+            --dot-amber: #fbbf24;
+            --dot-green: #34d399;
+        }
+
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            opacity: 0;
+
+            transition: background .35s ease, color .25s ease;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1400;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px var(--container-pad);
+            gap: 12px;
+            backdrop-filter: blur(8px);
+            background: var(--surface);
+            border-bottom: 1px solid var(--glass-border);
+            transition: background .3s ease, border-color .3s ease;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--blue);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: background .25s ease, color .25s ease;
+        }
+
+        html[data-theme="dark"] .logo {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .brand-title {
+            font-weight: 600;
+            font-size: 15px
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 500;
+            padding: 8px 10px;
+            border-radius: 8px;
+            transition: all .18s
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+            transform: translateY(-2px)
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .btn {
+            appearance: none;
+            border: 0;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .theme-btn {
+            background: linear-gradient(90deg, var(--blue), var(--green));
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.12)
+        }
+
+        .small-btn {
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--muted);
+            font-weight: 600
+        }
+
+
+        main {
+            padding-top: 80px
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 22px;
+            align-items: center;
+            min-height: 78vh;
+            padding: 36px var(--container-pad) 24px;
+            position: relative;
+        }
+
+        .hero-left {
+            padding-right: 6px;
+            max-width: 760px
+        }
+
+        .super {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--hover-accent);
+            color: var(--blue);
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 13px
+        }
+
+        .hero-left h1 {
+            padding-inline: 4rem;
+            margin: 10px 0 10px;
+            font-size: 40px;
+            line-height: 1.02;
+            background: linear-gradient(90deg, var(--blue), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .hero-left p {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 16px
+        }
+
+        .cta {
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: 0;
+            background: linear-gradient(90deg, var(--blue), var(--green));
+            color: #fff;
+            cursor: pointer
+        }
+
+        .secondary {
+            background: transparent;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: var(--muted);
+            cursor: pointer
+        }
+
+        .code-card {
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: var(--card-shadow);
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            transition: transform .18s, box-shadow .18s;
+        }
+
+        .code-card:focus-within {
+            transform: translateY(-4px)
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px
+        }
+
+        .dots {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            box-shadow: inset 0 -2px rgba(0, 0, 0, 0.08)
+        }
+
+        .dot.red {
+            background: var(--dot-red)
+        }
+
+        .dot.amber {
+            background: var(--dot-amber)
+        }
+
+        .dot.green {
+            background: var(--dot-green)
+        }
+
+        .code-area {
+            flex: 1;
+            overflow: auto;
+            border-radius: 10px;
+            padding: 12px;
+            background: rgba(8, 12, 20, 0.03);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+            font-size: 14px;
+            color: var(--text);
+            white-space: pre-wrap;
+            outline: none;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: background .15s, color .15s, border-color .15s;
+        }
+
+        html[data-theme="dark"] .code-area {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.03)
+        }
+
+        .code-area[contenteditable="true"]:focus {
+            box-shadow: 0 8px 22px rgba(14, 165, 233, 0.08)
+        }
+
+        .code-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .topics-section {
+            padding: 18px var(--container-pad) 12px;
+            max-width: 1200px;
+            margin: 4rem auto;
+
+            height: fit-content;
+
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 2fr));
+            gap: 2rem;
+        }
+
+        .topic-card {
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform .18s, box-shadow .2s, background .18s;
+            min-height: 64px;
+            color: var(--text);
+            backdrop-filter: blur(8px);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 18px 48px rgba(59, 130, 246, 0.08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+            border-color: rgba(59, 130, 246, 0.14);
+        }
+
+        html[data-theme="dark"] .topic-card:hover {
+            box-shadow: 0 18px 48px rgba(59, 130, 246, 0.07);
+            border-color: rgba(59, 130, 246, 0.14);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+        }
+
+        .topic-icon {
+            width: 48px;
+            height: 48;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--blue), var(--green));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0
+        }
+
+        .info-wrap {
+            max-width: 1100px;
+            margin: 18px auto;
+            padding: 8px var(--container-pad) 80px;
+            display: grid;
+            gap: 18px
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 12px;
+            min-height: 120px;
+            backdrop-filter: blur(8px)
+        }
+
+        .info-card h4 {
+            color: var(--blue);
+            margin-bottom: 10px
+        }
+
+        .info-card p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5
+        }
+
+
+        footer {
+            padding: 20px var(--container-pad);
+            text-align: center;
+            color: var(--muted);
+            border-top: 1px solid var(--glass-border)
+        }
+
+        .transition-overlay {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: background .2s
+        }
+
+        html[data-theme="dark"] .transition-overlay {
+            background: #020617
+        }
+
+        .topic-card:focus,
+        .topic-card:focus-within,
+        .cta:focus {
+            outline: 3px solid rgba(59, 130, 246, 0.12);
+            outline-offset: 4px
+        }
+
+
+        @media (min-width:900px) {
+            body {
+                --container-pad: 2.5rem
+            }
+        }
+
+        @media (min-width:1200px) {
+            body {
+                --container-pad: 3.5rem
+            }
+        }
+
+        @media (max-width:1100px) {
+            .hero {
+                grid-template-columns: 1fr 360px;
+                padding-top: 88px
+            }
+
+            .code-card {
+                height: 380px
+            }
+        }
+
+        @media (max-width:880px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 120px 18px 30px;
+                gap: 18px
+            }
+
+            .code-card {
+                order: 2;
+                height: 320px
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            .info-row {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="transition-overlay" aria-hidden="true"></div>
+
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo" aria-hidden="true">J</div>
+            <div class="brand-title">Java Education</div>
+        </div>
+
+        <div class="nav-links" aria-hidden="true">
+            <a href="index.html">Home</a>
+            <a href="program.html">Programs</a>
+            <a href="#topics">Topics</a>
+            <a href="about.html">About</a>
+        </div>
+
+        <div class="controls">
+            <button id="themeToggle" class="btn theme-btn" title="Toggle theme">Theme</button>
+            <button id="prefersDemo" class="small-btn">Pause Demo</button>
+        </div>
+    </nav>
+
+
+    <div class="float-elem" style="position:fixed;left:8%;top:18%;font-size:28px;opacity:0.06">☕</div>
+    <div class="float-elem" style="position:fixed;right:7%;top:28%;font-size:40px;opacity:0.05">{ }</div>
+
+    <main>
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="hero-left">
+                <span class="super">LEARN • PRACTICE • BUILD</span>
+                <h1 id="hero-heading">Master Java with modern, practical lessons</h1>
+                <p>Interactive exercises, real code previews and smooth micro-interactions that make learning focused &
+                    fun. Start small — build real programs.</p>
+
+                <div style="display:flex;gap:12px;margin-bottom:12px">
+                    <button class="cta" onclick="navigateTo('program.html')">Explore Programs</button>
+                    <button class="secondary" id="topicsJump">Browse Topics</button>
+                </div>
+
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <div
+                        style="background:var(--hover-accent);padding:8px 10px;border-radius:10px;font-weight:600;color:var(--blue)">
+                        Hands-on Exercises</div>
+                    <div
+                        style="background:rgba(16,185,129,0.07);padding:8px 10px;border-radius:10px;font-weight:600;color:var(--green)">
+                        Live Code Previews</div>
+                    <div
+                        style="background:rgba(15,23,42,0.04);padding:8px 10px;border-radius:10px;font-weight:600;color:var(--muted)">
+                        Beginner → Advanced</div>
+                </div>
+            </div>
+
+            <div class="code-card" aria-hidden="false">
+                <div class="code-header">
+                    <div class="dots" aria-hidden="true">
+                        <div class="dot red" title="close"></div>
+                        <div class="dot amber" title="minimize"></div>
+                        <div class="dot green" title="maximize"></div>
+                    </div>
+                    <div style="font-weight:700;color:var(--muted);font-size:13px">Example.java</div>
+                </div>
+
+                <pre id="codeArea" class="code-area" contenteditable="true" spellcheck="false"
+                    aria-label="Editable Java code">
+public class Example {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java World!");
+    }
+}
+        </pre>
+
+                <div class="code-footer">
+                    <div class="muted">Editable — demo typing animation runs automatically (pause on focus)</div>
+                    <div style="display:flex;gap:8px">
+                        <button id="runCodeBtn" class="small-btn">Run</button>
+                        <button id="resetCode" class="small-btn">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="topics" class="topics-section" aria-label="Topics">
+            <h3 style="margin:6px 0 12px;color:var(--muted);text-align:center;font-weight:700">Topics</h3>
+            <div class="topics-grid" id="topicsGrid" aria-live="polite"></div>
+        </section>
+
+
+        <section class="info-wrap" aria-label="info-cards">
+            <div class="info-row">
+                <div class="info-card" id="featuresCard">
+                    <h4>Features of Java</h4>
+                    <p>Platform independent (JVM), automatic memory management (garbage collection), a rich standard
+                        library, strong tooling, and a stable ecosystem for enterprise and mobile development.</p>
+                </div>
+                <div class="info-card" id="importanceCard">
+                    <h4>Why Java Matters</h4>
+                    <p>Java powers backend systems, Android apps, big-data tooling, and enterprise platforms — it's
+                        reliable, battle-tested, and widely used across industries.</p>
+                </div>
+                <div class="info-card" id="careers">
+                    <h4 id="careers-title">Career Opportunities</h4>
+                    <p>Backend developer, Android engineer, big-data engineer, DevOps automation, embedded systems, and
+                        finance — Java skills unlock many high-demand roles.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>© <span id="year"></span> Java Education — Built with ❤️ & GSAP</footer>
+    </main>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+
+        gsap.to("body", { opacity: 1, duration: 0.6, ease: "power1.out" });
+
+
+        const overlay = document.querySelector('.transition-overlay');
+        function navigateTo(href) {
+            gsap.to(overlay, { opacity: 1, duration: 0.45, ease: "power2.inOut", onComplete: () => window.location.href = href });
+        }
+
+        function isSamePage(href) {
+            if (!href) return true;
+            if (href.startsWith('#')) return true;
+            try {
+                const linkName = href.split('/').pop();
+                const curName = (window.location.pathname.split('/').pop() || 'index.html');
+                return linkName === curName || href === window.location.pathname;
+            } catch (e) { return false; }
+        }
+        document.querySelectorAll('a[href]').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (!isSamePage(href)) {
+                    e.preventDefault();
+                    navigateTo(href);
+                }
+            });
+        });
+
+        const topics = [
+            "APPLETS", "BASIC PROGRAMMING", "CONSTRUCTS", "DATA CONVERSION", "DELEGATION",
+            "EVENT MODEL", "EXCEPTION HANDLING", "FUNCTIONS", "GRAPHICAL USER INTERFACE (AWT)",
+            "GRAPHICAL USER INTERFACE (SWINGS)", "INHERITANCE", "INPUT/OUTPUT", "INTERFACES",
+            "JAVA DATABASE CONNECTIVITY", "MULTI-DIMENSION ARRAYS", "MULTITHREADING",
+            "OBJECT ORIENTED PROGRAMMING", "PACKAGES", "SINGLE DIMENSION ARRAYS", "STRINGS"
+        ];
+        const topicsGrid = document.getElementById('topicsGrid');
+        topics.forEach(t => {
+            const card = document.createElement('div');
+            card.className = 'topic-card';
+            card.setAttribute('tabindex', '0');
+            const initials = (t.match(/\b\w/g) || []).slice(0, 2).join('').toUpperCase() || 'J';
+            card.innerHTML = `<div class="topic-icon">${initials}</div>
+        <div>
+          <div style="font-weight:700;color:var(--text)">${t}</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px">Click to explore</div>
+        </div>`;
+            card.addEventListener('click', () => {
+                gsap.fromTo(card, { scale: 0.985 }, { scale: 1.03, duration: 0.14, yoyo: true, repeat: 1 });
+            });
+            card.addEventListener('keydown', e => { if (e.key === 'Enter') card.click(); });
+            topicsGrid.appendChild(card);
+        });
+
+        /* GSAP entrances */
+        gsap.from('.hero-left', { opacity: 0, x: -26, duration: 0.9, delay: 0.12 });
+        gsap.from('.code-card', { opacity: 0, x: 20, duration: 0.9, delay: 0.2 });
+        gsap.from(".topic-card", { scrollTrigger: { trigger: "#topics", start: "top 92%" }, opacity: 0, y: 18, stagger: 0.05, duration: 0.6 });
+        gsap.from('.info-card', { scrollTrigger: { trigger: '.info-wrap', start: 'top 85%' }, opacity: 0, y: 20, duration: 0.8, stagger: 0.12 });
+
+        /* Theme toggle (2-state only) */
+        const themeBtn = document.getElementById('themeToggle');
+        const THEME_KEY = 'je_theme';
+        function updateThemeLabel() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            themeBtn.textContent = isDark ? 'Light' : 'Dark';
+        }
+        updateThemeLabel();
+
+        themeBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem(THEME_KEY, 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem(THEME_KEY, 'dark');
+            }
+            updateThemeLabel();
+            gsap.fromTo(themeBtn, { scale: 0.98 }, { scale: 1.03, duration: 0.12, yoyo: true, repeat: 1 });
+        });
+
+
+        const codeArea = document.getElementById('codeArea');
+        const initialCode = `public class Example {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java World!");\n    }\n}\n`;
+        let fullText = initialCode, idx = 0, direction = 1, typingInterval = null, paused = false, demoPaused = false;
+
+        function startTyping() {
+            if (typingInterval) clearInterval(typingInterval);
+            typingInterval = setInterval(() => {
+                if (paused || demoPaused) return;
+                idx += direction;
+                if (idx >= fullText.length) { idx = fullText.length; direction = -1; clearInterval(typingInterval); setTimeout(startTyping, 900); return; }
+                if (idx <= 0) { idx = 0; direction = 1; clearInterval(typingInterval); setTimeout(startTyping, 600); return; }
+                if (document.activeElement !== codeArea) {
+                    codeArea.textContent = fullText.slice(0, idx);
+                } else {
+                    paused = true;
+                }
+            }, 42);
+        }
+        setTimeout(() => { codeArea.textContent = ''; startTyping(); }, 700);
+        codeArea.addEventListener('focus', () => { paused = true; });
+        codeArea.addEventListener('blur', () => { fullText = codeArea.textContent || ''; idx = Math.min(fullText.length, idx); paused = false; });
+
+        document.getElementById('resetCode').addEventListener('click', () => {
+            fullText = initialCode; codeArea.textContent = initialCode; idx = fullText.length; direction = -1;
+            if (typingInterval) clearInterval(typingInterval); setTimeout(startTyping, 220);
+        });
+        document.getElementById('runCodeBtn').addEventListener('click', () => {
+            gsap.fromTo('.code-card', { boxShadow: '0 6px 18px rgba(16,24,40,0.04)' }, { boxShadow: '0 20px 56px rgba(16,185,129,0.12)', duration: 0.28, yoyo: true, repeat: 1 });
+            alert('Demo: this is a UI preview. To run Java code use a proper Java runtime or server.');
+        });
+        const prefersDemo = document.getElementById('prefersDemo');
+        prefersDemo.addEventListener('click', () => { demoPaused = !demoPaused; prefersDemo.textContent = demoPaused ? 'Resume Demo' : 'Pause Demo'; if (!demoPaused && !typingInterval) startTyping(); });
+
+        document.getElementById('topicsJump').addEventListener('click', () => { document.getElementById('topics').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        gsap.utils.toArray('.float-elem').forEach(e => {
+            gsap.to(e, { y: "+=16", repeat: -1, yoyo: true, duration: 3 + Math.random() * 2, ease: "sine.inOut" });
+        });
+
+        window.addEventListener('pagehide', () => { if (typingInterval) clearInterval(typingInterval); });
+    </script>
+</body>
+
+</html>
