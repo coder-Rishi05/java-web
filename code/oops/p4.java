@@ -1,41 +1,57 @@
-// Main class to demonstrate accessing, modifying, and calculating Circle properties
-class p4 {
-    public static void main(String st[]) {
-        // Create Circle object with initial radius 5.7
-        Circle c1 = new Circle(5.7);
-        // Display initial radius
-        System.out.printf("Radius of Circle : %.4f\n", c1.getradius());
-        // Modify radius to 7.5
-        c1.modify(7.5);
-        // Display updated radius
-        System.out.printf("Updated radius of Circle : %.4f\n", c1.getradius());
-        // Display area of the circle with 4 decimal places
-        System.out.printf("Area of Circle : %.4f\n", c1.area());
-        // Display circumference of the circle with 4 decimal places
-        System.out.printf("Circumference of Circle : %.4f\n", c1.circumference());
-    }
-}
-// Circle class with a radius attribute
+/*
+4. Write a Java program to create a class called "Circle" with a radius attribute. 
+You can access and modify this attribute. Calculate the area and circumference of the circle.
+*/
+
 class Circle {
-    double radius;
-    // Constructor to initialize radius
-    Circle(double r) {
-        radius = r;
+    private double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
     }
-    // Method to get current radius
-    double getradius() {
+
+    void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    double getRadius() {
         return radius;
     }
-    // Method to modify the radius
-    void modify(double r) {
-        radius = r;
-    }
-    // Method to calculate area of the circle
-    double area() {
+
+    double calculateArea() {
         return Math.PI * radius * radius;
     }
-    // Method to calculate circumference of the circle
-    double circumference() {
+
+    double calculateCircumference() {
         return 2 * Math.PI * radius;
     }
+
+    void display() {
+        System.out.println("Radius: " + radius);
+        System.out.println("Area: " + calculateArea());
+        System.out.println("Circumference: " + calculateCircumference());
+    }
 }
+
+public class Main {
+    public static void main(String[] args) {
+        Circle c = new Circle(7);
+        c.display();
+
+        c.setRadius(10);
+        System.out.println("\nAfter modifying radius:");
+        c.display();
+    }
+}
+
+/*
+Output:
+Radius: 7.0
+Area: 153.93804002589985
+Circumference: 43.982297150257104
+
+After modifying radius:
+Radius: 10.0
+Area: 314.1592653589793
+Circumference: 62.83185307179586
+*/

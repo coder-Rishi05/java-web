@@ -1,104 +1,90 @@
-/*16. Write a Java program to create a class called "Shape" with abstract methods for 
-    calculating area and perimeter, and subclasses for "Rectangle", "Circle", and "Triangle".*/
-
-import java.io.*;
+/*
+16. Write a Java program to create a class called "Shape" with abstract methods for calculating
+area and perimeter, and subclasses for "Rectangle", "Circle", and "Triangle".
+*/
 
 abstract class Shape {
-    // Abstract methods for area and perimeter
-    abstract double area();
-    abstract double perimeter();
+    abstract double calculateArea();
+    abstract double calculatePerimeter();
 }
 
-// Rectangle subclass
 class Rectangle extends Shape {
-    private double length;
-    private double width;
+    double width, height;
 
-    Rectangle(double l, double w) {
-        length = l;
-        width = w;
+    Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
     }
 
-    // Override area method
-    double area() {
-        return length * width;
+    double calculateArea() {
+        return width * height;
     }
 
-    // Override perimeter method
-    double perimeter() {
-        return 2 * (length + width);
+    double calculatePerimeter() {
+        return 2 * (width + height);
     }
 }
 
-// Circle subclass
 class Circle extends Shape {
-    private double radius;
+    double radius;
 
-    Circle(double r) {
-        radius = r;
+    Circle(double radius) {
+        this.radius = radius;
     }
 
-    // Override area method
-    double area() {
+    double calculateArea() {
         return Math.PI * radius * radius;
     }
 
-    // Override perimeter method
-    double perimeter() {
+    double calculatePerimeter() {
         return 2 * Math.PI * radius;
     }
 }
 
-// Triangle subclass
 class Triangle extends Shape {
-    private double a, b, c; // sides of triangle
+    double a, b, c;
 
-    Triangle(double x, double y, double z) {
-        a = x;
-        b = y;
-        c = z;
+    Triangle(double a, double b, double c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
-    // Override area method using Heron's formula
-    double area() {
+    double calculateArea() {
         double s = (a + b + c) / 2;
         return Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
 
-    // Override perimeter method
-    double perimeter() {
+    double calculatePerimeter() {
         return a + b + c;
     }
 }
 
-// Main class to demonstrate shapes
-class p16 {
-    public static void main(String st[]) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+public class Main {
+    public static void main(String[] args) {
+        Shape rect = new Rectangle(10, 5);
+        Shape circle = new Circle(7);
+        Shape triangle = new Triangle(3, 4, 5);
 
-        // Rectangle input
-        System.out.print("Enter length of rectangle: ");
-        double l = Double.parseDouble(br.readLine());
-        System.out.print("Enter width of rectangle: ");
-        double w = Double.parseDouble(br.readLine());
-        Rectangle rect = new Rectangle(l, w);
+        System.out.println("Rectangle Area: " + rect.calculateArea());
+        System.out.println("Rectangle Perimeter: " + rect.calculatePerimeter());
 
-        // Circle input
-        System.out.print("Enter radius of circle: ");
-        double r = Double.parseDouble(br.readLine());
-        Circle circ = new Circle(r);
+        System.out.println("\nCircle Area: " + circle.calculateArea());
+        System.out.println("Circle Perimeter: " + circle.calculatePerimeter());
 
-        // Triangle input
-        System.out.print("Enter sides of triangle (a b c): ");
-        String[] sides = br.readLine().split(" ");
-        double a = Double.parseDouble(sides[0]);
-        double b = Double.parseDouble(sides[1]);
-        double c = Double.parseDouble(sides[2]);
-        Triangle tri = new Triangle(a, b, c);
-
-        // Display areas and perimeters
-        System.out.println("\nRectangle -> Area: " + rect.area() + ", Perimeter: " + rect.perimeter());
-        System.out.println("Circle -> Area: " + circ.area() + ", Perimeter: " + circ.perimeter());
-        System.out.println("Triangle -> Area: " + tri.area() + ", Perimeter: " + tri.perimeter());
+        System.out.println("\nTriangle Area: " + triangle.calculateArea());
+        System.out.println("Triangle Perimeter: " + triangle.calculatePerimeter());
     }
 }
+
+/*
+Sample Output:
+Rectangle Area: 50.0
+Rectangle Perimeter: 30.0
+
+Circle Area: 153.93804002589985
+Circle Perimeter: 43.982297150257104
+
+Triangle Area: 6.0
+Triangle Perimeter: 12.0
+*/

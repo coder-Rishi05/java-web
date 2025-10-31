@@ -10,12 +10,12 @@ class p15 {
         MusicLibrary lib = new MusicLibrary(); // Create MusicLibrary object
         Random rand = new Random();
 
-        while(true) {
+        while (true) {
             System.out.println("\n1. Add Song\n2. Remove Song\n3. Display Songs\n4. Play Random Song\n5. Exit");
             System.out.print("Enter your choice: ");
             int choice = Integer.parseInt(br.readLine());
 
-            switch(choice) {
+            switch (choice) {
                 case 1:
                     System.out.print("Enter song name: ");
                     String songName = br.readLine();
@@ -44,8 +44,8 @@ class p15 {
 
 // MusicLibrary class using fixed-size array for storing songs
 class MusicLibrary {
-    private String[] songs;  // Array to store song names
-    private int songCount;   // Number of songs currently in library
+    private String[] songs; // Array to store song names
+    private int songCount; // Number of songs currently in library
 
     MusicLibrary() {
         songs = new String[50]; // Maximum 50 songs
@@ -54,12 +54,12 @@ class MusicLibrary {
 
     // Method to add a song
     void addSong(String name) {
-        if(songCount >= 50) {
+        if (songCount >= 50) {
             System.out.println("Cannot add more songs. Library full.");
             return;
         }
-        for(int i = 0; i < songCount; i++) {
-            if(songs[i].equalsIgnoreCase(name)) {
+        for (int i = 0; i < songCount; i++) {
+            if (songs[i].equalsIgnoreCase(name)) {
                 System.out.println(name + " is already in the library.");
                 return;
             }
@@ -71,9 +71,9 @@ class MusicLibrary {
     // Method to remove a song
     void removeSong(String name) {
         boolean found = false;
-        for(int i = 0; i < songCount; i++) {
-            if(songs[i].equalsIgnoreCase(name)) {
-                for(int j = i; j < songCount - 1; j++) {
+        for (int i = 0; i < songCount; i++) {
+            if (songs[i].equalsIgnoreCase(name)) {
+                for (int j = i; j < songCount - 1; j++) {
                     songs[j] = songs[j + 1];
                 }
                 songs[--songCount] = null;
@@ -82,26 +82,26 @@ class MusicLibrary {
                 break;
             }
         }
-        if(!found) {
+        if (!found) {
             System.out.println(name + " not found in library.");
         }
     }
 
     // Method to display all songs
     void displaySongs() {
-        if(songCount == 0) {
+        if (songCount == 0) {
             System.out.println("Library is empty.");
             return;
         }
         System.out.println("Songs in Library:");
-        for(int i = 0; i < songCount; i++) {
+        for (int i = 0; i < songCount; i++) {
             System.out.println((i + 1) + ". " + songs[i]);
         }
     }
 
     // Method to play a random song
     void playRandomSong(Random rand) {
-        if(songCount == 0) {
+        if (songCount == 0) {
             System.out.println("Library is empty. Cannot play any song.");
             return;
         }
@@ -109,3 +109,69 @@ class MusicLibrary {
         System.out.println("Now playing: " + songs[index]);
     }
 }
+
+/*
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 1
+ * Enter song name: believer
+ * believer added to library.
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 1
+ * Enter song name: man
+ * man added to library.
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 3
+ * Songs in Library:
+ * 1. believer
+ * 2. man
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 4
+ * Now playing: man
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 2
+ * Enter song name to remove: man
+ * man removed from library.
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 3
+ * Songs in Library:
+ * 1. believer
+ * 
+ * 1. Add Song
+ * 2. Remove Song
+ * 3. Display Songs
+ * 4. Play Random Song
+ * 5. Exit
+ * Enter your choice: 5
+ * Exiting...
+ * 
+ */

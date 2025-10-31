@@ -1,53 +1,49 @@
-/*22. Create a class showing an example of copy constructor.*/
+/*
+22. Create a class showing an example of copy constructor.
+*/
 
-import java.io.*;
-
-class p22 {
-    public static void main(String st[]) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.print("Enter name of the employee: ");
-        String name = br.readLine();
-
-        System.out.print("Enter employee ID: ");
-        int id = Integer.parseInt(br.readLine());
-
-        // Creating Employee object using parameterized constructor
-        Employee e1 = new Employee(name, id);
-
-        // Creating another Employee object using copy constructor
-        Employee e2 = new Employee(e1);
-
-        System.out.println("\nOriginal Employee:");
-        e1.display();
-
-        System.out.println("\nCopied Employee:");
-        e2.display();
-    }
-}
-
-// Class demonstrating copy constructor
-class Employee {
-    private String name;
-    private int id;
+class Student {
+    String name;
+    int age;
 
     // Parameterized constructor
-    Employee(String n, int i) {
+    Student(String n, int a) {
         name = n;
-        id = i;
-        System.out.println("Parameterized constructor called.");
+        age = a;
     }
 
     // Copy constructor
-    Employee(Employee e) {
-        name = e.name; // Copy name
-        id = e.id;     // Copy id
-        System.out.println("Copy constructor called.");
+    Student(Student s) {
+        name = s.name;
+        age = s.age;
     }
 
-    // Method to display employee details
     void display() {
         System.out.println("Name: " + name);
-        System.out.println("Employee ID: " + id);
+        System.out.println("Age: " + age);
     }
 }
+
+public class Main {
+    public static void main(String[] args) {
+        Student s1 = new Student("Sachin", 21);
+        Student s2 = new Student(s1); // Using copy constructor
+
+        System.out.println("Original Object:");
+        s1.display();
+
+        System.out.println("\nCopied Object:");
+        s2.display();
+    }
+}
+
+/*
+Sample Output:
+Original Object:
+Name: Sachin
+Age: 21
+
+Copied Object:
+Name: Sachin
+Age: 21
+*/
